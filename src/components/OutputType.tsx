@@ -1,23 +1,29 @@
 /* This example requires Tailwind CSS v2.0+ */
-import React, { useState } from 'react';
+import React from 'react';
 import { RadioGroup } from '@headlessui/react';
 import classNames from '../utils/classNames';
 
-export default function RadioInput({ options }: { options: { name: string; available: boolean }[] }) {
-  const [mem, setMem] = useState(options[0]);
+export default function OutputType({
+  options,
+  mem,
+  setMem
+}: {
+  options: { id: number; name: string; available: boolean }[];
+  mem: { name: string; available: boolean };
+  setMem: any;
+}) {
+  // const [mem, setMem] = useState(options[0]);
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <h2 className="text-sm text-gray-300">Output type</h2>
-      </div>
+    <div className="mt-4">
+      <h2 className="text-lg font-semibold">Output type</h2>
 
       <RadioGroup value={mem} onChange={setMem} className="mt-2">
         <RadioGroup.Label className="sr-only">Output type</RadioGroup.Label>
         <div className="flex gap-4">
-          {options.map((option: { name: string; available: boolean }) => (
+          {options.map((option: { id: number; name: string; available: boolean }) => (
             <RadioGroup.Option
-              key={option.name}
+              key={option.id}
               value={option}
               className={({ active, checked }) =>
                 classNames(

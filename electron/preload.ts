@@ -1,4 +1,5 @@
 import { ipcRenderer, contextBridge } from 'electron';
+import requestInterface from './scripts/interfaces';
 
 declare global {
   interface Window {
@@ -20,6 +21,9 @@ const api = {
   },
   searchFolder: () => {
     ipcRenderer.send('openDialog');
+  },
+  LaunchTranslation: (request: typeof requestInterface) => {
+    ipcRenderer.send('translate', request);
   },
   /**
     Here function for AppBar

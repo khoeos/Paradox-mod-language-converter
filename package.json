@@ -36,9 +36,11 @@
     "@heroicons/react": "^1.0.6",
     "@tailwindcss/forms": "^0.5.1",
     "@vitejs/plugin-react": "^1.2.0",
+    "directory-tree": "^3.2.2",
     "electron-is-dev": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-toastify": "^9.0.1",
     "vite": "^2.8.6"
   },
   "devDependencies": {

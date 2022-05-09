@@ -3,12 +3,21 @@ import React, { useState } from 'react';
 import { Switch } from '@headlessui/react';
 import classNames from '../utils/classNames';
 
-export default function SwitchInput({ label, disabled }: { label: string; disabled?: boolean }) {
+export default function SwitchInput({
+  label,
+  disabled,
+  onClick
+}: {
+  label: string;
+  disabled?: boolean;
+  onClick?: any;
+}) {
   // eslint-disable-next-line react/destructuring-assignment
   const [enabled, setEnabled] = useState(disabled ?? false);
   const toggle = () => {
     if (!disabled) {
       setEnabled(!enabled);
+      onClick();
     }
   };
   return (

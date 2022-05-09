@@ -5,8 +5,10 @@ import { join } from 'path';
 import { BrowserWindow, app, ipcMain, IpcMainEvent, dialog } from 'electron';
 import isDev from 'electron-is-dev';
 
-const height = 600;
-const width = 800;
+import { translate } from './scripts/translate';
+
+const height = 700;
+const width = 1280;
 
 function createWindow() {
   // Create the browser window.
@@ -61,6 +63,11 @@ function createWindow() {
         }
       })
       .catch((err) => console.log(err));
+  });
+  ipcMain.on('translate', (event: IpcMainEvent, request: any) => {
+    // console.log(request);
+    translate(request).then(() => event.sender.send('translate', 'ok'));
+    // setTimeout(() => event.sender.send('translate', 'ok'), 5000);
   });
 }
 

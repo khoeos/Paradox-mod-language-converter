@@ -2,15 +2,23 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Disclosure } from '@headlessui/react';
+import { ToastContainer, toast, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { ChevronDownIcon } from '@heroicons/react/solid';
+
 import FolderSelector from './components/FolderSelector';
-import RadioInput from './components/RadioInput';
 import Select from './components/Select';
 import SwitchInput from './components/Switch';
 import Tabs from './components/Tabs';
+import Notes from './components/texts/Notes';
+import Work from './components/texts/Work';
+import HowTo from './components/texts/HowTo';
+import Header from './components/texts/Header';
+import OutputType from './components/OutputType';
+import Loader from './components/loader/Loader';
 
 const tabs = [
   { name: 'Stellaris', id: 1 },
@@ -22,18 +30,80 @@ const tabs = [
 ];
 
 const outputOptions = [
-  { name: 'Add to current mod(s)', available: true },
-  { name: 'Extract to folder', available: false },
-  { name: 'Create translation mod', available: false }
+  { id: 1, name: 'Add to current mod(s)', available: true },
+  { id: 2, name: 'Extract to folder', available: false },
+  { id: 3, name: 'Create translation mod', available: false }
 ];
 
 function App() {
   const [game, setGame] = useState(1);
+  const [output, setOutput] = useState(outputOptions[0]);
+  const [path, setPath] = useState('');
+  const [outputLanguages, setOutputLanguages] = useState({
+    english: false,
+    french: false,
+    german: false,
+    spanish: false,
+    russian: false,
+    chinese: false,
+    portugese: false,
+    polish: false
+  });
+  // const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   console.log(window.ipcRenderer);
+
+  const toggleLanguage = (language: string) => {
+    setOutputLanguages({ ...outputLanguages, [language]: !outputLanguages[language] });
+  };
+  console.log(outputLanguages);
 
   const changeGame = (id: number) => {
     console.log(id);
     setGame(id);
+  };
+  useEffect(() => {
+    window.Main.on('translate', (result) => {
+      console.log(result);
+      setLoading(false);
+      toast.success('Sucessfully Translated', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
+    });
+  }, []);
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    // if (path === '') {
+    //   // setError('Empty Path');
+    //   toast.error(<div className="text-red-900">Empty path</div>, {
+    //     position: 'top-right',
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined
+    //   });
+    //   return;
+    // }
+    const request = {
+      game,
+      path,
+      output: output.id ?? 1,
+      outputLanguages
+    };
+    if (window.Main) {
+      setLoading(true);
+      window.Main.LaunchTranslation(request);
+    }
+    console.log(request);
   };
 
   const currentImg = (id: number): string => {
@@ -59,125 +129,38 @@ function App() {
 
   return (
     <div className="flex h-screen">
-      <button className="absolute top-10 right-5 inline-flex items-center justify-center rounded-full  border border-amber-600 bg-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
-        Github
-      </button>
       <div
         className="w-full text-gray-300"
         style={{ backgroundImage: currentImg(game), backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="flex h-full flex-col items-center justify-center space-y-4 bg-slate-800/50 px-8 py-4">
-          <div className="text-white">
-            <h1 className="text-4xl font-bold ">Paradox Mod Language Converter</h1>
-            <p className="font-light opacity-50">Formerly paradox localization converter</p>
-          </div>
+          <Header />
           <Tabs tabs={tabs} current={game} setGame={changeGame} />
-          <form id="form" className="flex w-full flex-col items-center space-y-4">
-            <div className=" w-full rounded-lg bg-slate-900/75 p-4 text-sm backdrop-blur-sm">
-              <Disclosure>
-                {({ open }: any) => (
-                  <>
-                    <Disclosure.Button className="flex w-full items-center py-2 text-lg font-semibold">
-                      <ChevronDownIcon className={`mr-2 h-5 w-5 ${open ? 'rotate-180' : ''}`} />
-                      Infos & How to
-                    </Disclosure.Button>
+          <div className=" w-full rounded-lg bg-slate-900/75 p-4 text-sm backdrop-blur-sm">
+            <Disclosure>
+              {({ open }: any) => (
+                <>
+                  <Disclosure.Button className="flex w-full items-center py-2 text-lg font-semibold">
+                    <ChevronDownIcon className={`mr-2 h-5 w-5 ${open ? 'rotate-180' : ''}`} />
+                    Infos & How to
+                  </Disclosure.Button>
 
-                    <Disclosure.Panel className="flex gap-4 text-gray-300">
-                      <div className="w-5/12 space-y-4">
-                        <div className="space-y-2">
-                          <h2 className="text-lg font-semibold text-white">How it work</h2>
-                          <p>
-                            You can learn more in the github readme accessible with the button in the top right corner.
-                          </p>
-                          <p>
-                            But to explain it simply, this app generate language file from the source language to your
-                            desired language to avoid translation tag in game
-                          </p>
-                          <p>
-                            It not translate the mods from one language to another, only generate localisation files
-                            based of the source language.
-                          </p>
-                          <p>
-                            If the localisation file is defined, even if it's uncomplete, this app will ignore it and
-                            don't generate loc. file by default
-                          </p>
-                        </div>
-                        <div className="space-y-2">
-                          <h2 className="text-lg font-semibold text-white">Limitations and notes</h2>
-                          <div className="space-y-1">
-                            <p>
-                              I've see multiple mods using folders like synced_localisation or replace folders, the
-                              scrip will ignore theses folders for now.
-                            </p>
-                            <p>
-                              This tool is mainly tested with stellaris, i've tested it with eu4 and ck3, but with fewer
-                              mods/usecase and not personnaly tested with hoi4, imperator rome and victoria 2, the logic
-                              is the same so there should be no problems but for some specific case it may not work.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="">
-                        <h2 className="text-lg font-semibold text-white">How to use it</h2>
-                        <ol className="list-decimal space-y-2 pl-6">
-                          <li>Select your game on the top</li>
-                          <li>
-                            If you want to translate all your mods within the steam workshop / paradox mod folder, leave
-                            the select on "mod Folder"
-                          </li>
-                          <li>Select or enter the root folder (if mod folder) or the specific mod folder.</li>
-                          <li>
-                            Select the source language, then the output languages, you can choose as many as you want
-                          </li>
-                          <li>
-                            You can change the output type :
-                            <ul className="list-disc space-y-1 pl-4">
-                              <li>
-                                <strong>Add to current mod :</strong> Create new files directly into the actual mod
-                                folder, and create a .addedFile in the root of each mods with the list of the new files.
-                              </li>
-                              <li>
-                                <strong>Extract to folder :</strong> Extract all new files to a specified folder (use it
-                                for create translation mod, or for single mod). You can set multiple extract options
-                              </li>
-                              <li>
-                                <strong>Create translation mod :</strong> Not available now, the goal is to
-                                automatically create a new translation patch mod{' '}
-                              </li>
-                            </ul>
-                          </li>
-                          <li>
-                            You can also add several options :
-                            <ul className="list-disc space-y-1 pl-6">
-                              <li>
-                                <strong>Force generate files :</strong> Even if a localisation file of your desired
-                                language exist, it will create a new one (choose extract to folder to avoid file
-                                deletion)
-                              </li>
-                            </ul>
-                          </li>
-                        </ol>
-                      </div>
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-            </div>
-
+                  <Disclosure.Panel className="flex gap-4 text-gray-300">
+                    <div className="w-5/12 space-y-4">
+                      <Work />
+                      <Notes />
+                    </div>
+                    <HowTo />
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+          </div>
+          <form id="form" onSubmit={handleSubmit} className="flex w-full flex-col items-center space-y-4">
             <div className="flex w-full justify-between gap-x-10">
               <div className="w-7/12 rounded-lg bg-slate-900/75 p-4 backdrop-blur-sm">
-                <label className="text-lg font-semibold" htmlFor="folder">
-                  Mod(s) folder
-                </label>
-                <div className="mt-2 flex flex-col">
-                  <div className="mt-2 flex w-full gap-x-2">
-                    <FolderSelector />
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <RadioInput options={outputOptions} />
-                </div>
+                <FolderSelector path={path} setPath={setPath} />
+                <OutputType mem={output} setMem={setOutput} options={outputOptions} />
 
                 <div className="mt-2 space-y-2">
                   <Disclosure>
@@ -189,7 +172,7 @@ function App() {
                         </Disclosure.Button>
 
                         <Disclosure.Panel className="text-gray-500">
-                          <div>test</div>
+                          <div>Soon</div>
                         </Disclosure.Panel>
                       </>
                     )}
@@ -208,27 +191,39 @@ function App() {
                   <p className="text-lg font-semibold">Output language</p>
                   <div className="win-w-max mt-2 grid grid-cols-4 items-center gap-x-3 gap-y-2">
                     <SwitchInput label="English" disabled />
-                    <SwitchInput label="French" />
-                    <SwitchInput label="German" />
-                    <SwitchInput label="Spanish" />
-                    <SwitchInput label="Russian" />
-                    <SwitchInput label="Chinese" />
-                    <SwitchInput label="Portugese" />
-                    <SwitchInput label="Polish" />
+                    <SwitchInput label="French" onClick={() => toggleLanguage('french')} />
+                    <SwitchInput label="German" onClick={() => toggleLanguage('german')} />
+                    <SwitchInput label="Spanish" onClick={() => toggleLanguage('spanish')} />
+                    <SwitchInput label="Russian" onClick={() => toggleLanguage('russian')} />
+                    <SwitchInput label="Chinese" onClick={() => toggleLanguage('chinese')} />
+                    <SwitchInput label="Portugese" onClick={() => toggleLanguage('portugese')} />
+                    <SwitchInput label="Polish" onClick={() => toggleLanguage('polish')} />
                   </div>
                 </div>
               </div>
             </div>
 
             <button
-              type="button"
+              type="submit"
               className="inline-flex w-full items-center justify-center rounded-lg border border-transparent bg-amber-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
             >
-              Translate
+              {loading ? <Loader /> : 'Translate '}
             </button>
           </form>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        transition={Slide}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }
