@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/Khoeos/Paradox-mod-localisation-converter">
+  <a href="https://github.com/khoeos/Paradox-mod-language-converter">
     <img src="https://cdn.discordapp.com/attachments/461604877072728074/973244558005645322/unknown.png" alt="Logo">
   </a>
 
