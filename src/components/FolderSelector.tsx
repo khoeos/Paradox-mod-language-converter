@@ -1,3 +1,4 @@
+/* eslint-disable no-octal-escape */
 import React, { useEffect, useState } from 'react';
 import { FolderOpenIcon } from '@heroicons/react/solid';
 

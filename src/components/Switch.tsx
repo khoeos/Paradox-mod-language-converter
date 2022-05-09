@@ -1,14 +1,11 @@
 /* This example requires Tailwind CSS v2.0+ */
 import React, { useState } from 'react';
 import { Switch } from '@headlessui/react';
+import classNames from '../utils/classNames';
 
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ');
-}
-
-export default function SwitchInput({ label, disabled, ...props }: any) {
+export default function SwitchInput({ label, disabled }: { label: string; disabled?: boolean }) {
   // eslint-disable-next-line react/destructuring-assignment
-  const [enabled, setEnabled] = useState(props.enabled ?? false);
+  const [enabled, setEnabled] = useState(disabled ?? false);
   const toggle = () => {
     if (!disabled) {
       setEnabled(!enabled);
@@ -28,7 +25,7 @@ export default function SwitchInput({ label, disabled, ...props }: any) {
           aria-hidden="true"
           className={classNames(
             enabled ? 'bg-indigo-600' : 'bg-gray-200',
-            disabled ? 'bg-gray-600' : null,
+            disabled ? 'bg-gray-600' : '',
             'pointer-events-none absolute mx-auto h-4 w-9 rounded-full transition-colors duration-200 ease-in-out'
           )}
         />

@@ -1,12 +1,9 @@
 /* This example requires Tailwind CSS v2.0+ */
 import React, { useState } from 'react';
 import { RadioGroup } from '@headlessui/react';
+import classNames from '../utils/classNames';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
-export default function RadioInput({ options }) {
+export default function RadioInput({ options }: { options: { name: string; available: boolean }[] }) {
   const [mem, setMem] = useState(options[0]);
 
   return (
@@ -18,7 +15,7 @@ export default function RadioInput({ options }) {
       <RadioGroup value={mem} onChange={setMem} className="mt-2">
         <RadioGroup.Label className="sr-only">Output type</RadioGroup.Label>
         <div className="flex gap-4">
-          {options.map((option) => (
+          {options.map((option: { name: string; available: boolean }) => (
             <RadioGroup.Option
               key={option.name}
               value={option}

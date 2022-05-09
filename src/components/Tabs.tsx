@@ -1,15 +1,20 @@
 import React from 'react';
+import classNames from '../utils/classNames';
 
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(' ');
-}
-
-export default function Tabs({ tabs, current, setGame }: any) {
+export default function Tabs({
+  tabs,
+  current,
+  setGame
+}: {
+  tabs: { name: string; id: number }[];
+  current: number;
+  setGame: any;
+}) {
   return (
     <div className="flex w-full justify-center rounded-lg bg-slate-900/75 p-4 backdrop-blur-sm">
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-          {tabs.map((tab) => (
+          {tabs.map((tab: { id: number; name: string }) => (
             <button
               onClick={() => setGame(tab.id)}
               key={tab.name}

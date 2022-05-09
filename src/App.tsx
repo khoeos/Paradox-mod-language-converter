@@ -1,29 +1,29 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Disclosure } from '@headlessui/react';
 
-import AppBar from './AppBar';
+import { ChevronDownIcon } from '@heroicons/react/solid';
 import FolderSelector from './components/FolderSelector';
 import RadioInput from './components/RadioInput';
 import Select from './components/Select';
 import SwitchInput from './components/Switch';
 import Tabs from './components/Tabs';
-import { ChevronDownIcon } from '@heroicons/react/solid';
 
 const tabs = [
   { name: 'Stellaris', id: 1 },
   { name: 'Crusader King 3', id: 2 },
   { name: 'Europa Universalis 3', id: 3 },
   { name: 'Heart of iron 4', id: 4 }
-  // { name: 'Victoria 2', id: 6 },
+  // { name: 'Victoria 2' , id: 6 },
   // { name: 'Imperator Rome', id: 5 }
 ];
 
 const outputOptions = [
   { name: 'Add to current mod(s)', available: true },
-  { name: 'Extract to folder', available: true },
+  { name: 'Extract to folder', available: false },
   { name: 'Create translation mod', available: false }
 ];
 
@@ -31,12 +31,12 @@ function App() {
   const [game, setGame] = useState(1);
   console.log(window.ipcRenderer);
 
-  const changeGame = (id) => {
+  const changeGame = (id: number) => {
     console.log(id);
     setGame(id);
   };
 
-  const currentImg = (id) => {
+  const currentImg = (id: number): string => {
     if (game)
       switch (id) {
         case 1:
@@ -52,22 +52,18 @@ function App() {
         case 6:
           return 'url(./assets/victoria.jpg)';
         default:
-          break;
+          return '';
       }
+    return '';
   };
 
   return (
-    <div className="flex h-screen flex-col">
-      {/* {window.Main && (
-        <div className="flex-none">
-          <AppBar />
-        </div>
-      )} */}
+    <div className="flex h-screen">
       <button className="absolute top-10 right-5 inline-flex items-center justify-center rounded-full  border border-amber-600 bg-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
         Github
       </button>
       <div
-        className="flex-auto text-gray-300"
+        className="w-full text-gray-300"
         style={{ backgroundImage: currentImg(game), backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="flex h-full flex-col items-center justify-center space-y-4 bg-slate-800/50 px-8 py-4">
@@ -79,10 +75,10 @@ function App() {
           <form id="form" className="flex w-full flex-col items-center space-y-4">
             <div className=" w-full rounded-lg bg-slate-900/75 p-4 text-sm backdrop-blur-sm">
               <Disclosure>
-                {({ open }) => (
+                {({ open }: any) => (
                   <>
-                    <Disclosure.Button className="flex items-center py-2 text-lg font-semibold">
-                      <ChevronDownIcon className={`mr-2 h-5 w-5 `} />
+                    <Disclosure.Button className="flex w-full items-center py-2 text-lg font-semibold">
+                      <ChevronDownIcon className={`mr-2 h-5 w-5 ${open ? 'rotate-180' : ''}`} />
                       Infos & How to
                     </Disclosure.Button>
 
@@ -185,10 +181,10 @@ function App() {
 
                 <div className="mt-2 space-y-2">
                   <Disclosure>
-                    {({ open }) => (
+                    {({ open }: any) => (
                       <>
                         <Disclosure.Button className="flex items-center py-2 text-lg font-semibold">
-                          <ChevronDownIcon className={`mr-2 h-5 w-5 `} />
+                          <ChevronDownIcon className={`mr-2 h-5 w-5 ${open ? 'rotate-180' : ''}`} />
                           Options
                         </Disclosure.Button>
 
