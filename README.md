@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/Khoeos/Paradox-mod-localisation-converter">
-    <img src="github/app.png" alt="Logo">
+    <img src="https://cdn.discordapp.com/attachments/461604877072728074/973244558005645322/unknown.png" alt="Logo">
   </a>
 
   <p align="center">
