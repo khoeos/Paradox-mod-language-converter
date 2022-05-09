@@ -60,6 +60,7 @@ Only build and tested for windows, due to on the directory system being differen
 ## How it Work
 
 _If you know french, everything is commented, the translation will come later. Every variables and functions are in english though_
+
 More details soon
 
 <!-- OTHER PARADOX GAMES -->
