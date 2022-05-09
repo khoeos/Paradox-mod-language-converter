@@ -54,7 +54,7 @@ function App() {
   console.log(window.ipcRenderer);
 
   const toggleLanguage = (language: string) => {
-    setOutputLanguages({ ...outputLanguages, [language]: !outputLanguages[language] });
+    setOutputLanguages({ ...outputLanguages, [language]: !outputLanguages[language as keyof typeof outputLanguages] });
   };
   console.log(outputLanguages);
 
