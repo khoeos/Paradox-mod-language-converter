@@ -7,7 +7,7 @@ import isDev from 'electron-is-dev';
 
 import { translate } from './scripts/translate';
 
-const height = 700;
+const height = 800;
 const width = 1280;
 
 function createWindow() {
@@ -15,8 +15,6 @@ function createWindow() {
   const window = new BrowserWindow({
     width,
     height,
-    //  change to false to use AppBar
-    // frame: false,
     autoHideMenuBar: true,
     show: true,
     resizable: true,
@@ -36,22 +34,7 @@ function createWindow() {
     window?.loadFile(url);
   }
   // Open the DevTools.
-  window.webContents.openDevTools({ mode: 'detach' });
-
-  // For AppBar
-  ipcMain.on('minimize', () => {
-    // eslint-disable-next-line no-unused-expressions
-    window.isMinimized() ? window.restore() : window.minimize();
-    // or alternatively: win.isVisible() ? win.hide() : win.show()
-  });
-  ipcMain.on('maximize', () => {
-    // eslint-disable-next-line no-unused-expressions
-    window.isMaximized() ? window.restore() : window.maximize();
-  });
-
-  ipcMain.on('close', () => {
-    window.close();
-  });
+  // window.webContents.openDevTools({ mode: 'detach' });
 
   ipcMain.on('openDialog', () => {
     dialog
@@ -59,15 +42,12 @@ function createWindow() {
       .then((result) => {
         if (!result.canceled) {
           window.webContents.send('folder', result);
-          console.log(result);
         }
       })
       .catch((err) => console.log(err));
   });
   ipcMain.on('translate', (event: IpcMainEvent, request: any) => {
-    // console.log(request);
-    translate(request).then(() => event.sender.send('translate', 'ok'));
-    // setTimeout(() => event.sender.send('translate', 'ok'), 5000);
+    translate(request).then((result) => event.sender.send('translate', result));
   });
 }
 

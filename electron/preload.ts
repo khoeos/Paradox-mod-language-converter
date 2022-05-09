@@ -26,18 +26,6 @@ const api = {
     ipcRenderer.send('translate', request);
   },
   /**
-    Here function for AppBar
-   */
-  Minimize: () => {
-    ipcRenderer.send('minimize');
-  },
-  Maximize: () => {
-    ipcRenderer.send('maximize');
-  },
-  Close: () => {
-    ipcRenderer.send('close');
-  },
-  /**
    * Provide an easier way to listen to events
    */
   on: (channel: string, callback: (data: any) => void) => {

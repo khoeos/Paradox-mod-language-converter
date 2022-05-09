@@ -3,16 +3,7 @@ export interface requestInterface {
   path: string;
   output: number;
   sourceLanguage?: string;
-  outputLanguages: {
-    english: boolean;
-    french: boolean;
-    german: boolean;
-    spanish: boolean;
-    russian: boolean;
-    chinese: boolean;
-    portugese: boolean;
-    polish: boolean;
-  };
+  outputLanguages: string[];
   options?: string[];
 }
 

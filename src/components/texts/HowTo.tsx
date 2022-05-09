@@ -5,6 +5,7 @@ export default function HowTo() {
   return (
     <div>
       <h2 className="text-lg font-semibold text-white">How to use it</h2>
+      <p>This pre-alpha version as limited features</p>
       <ol className="list-decimal space-y-2 pl-6">
         <li>Select your game on the top</li>
         <li>

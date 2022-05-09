@@ -9,6 +9,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { ChevronDownIcon } from '@heroicons/react/solid';
 
+import ck3Bg from './assets/ck3.png';
+import stellarisBg from './assets/stellaris.png';
+import eu4Bg from './assets/eu4.jpg';
+import hoi4Bg from './assets/hoi4.jpg';
+import imperatorBg from './assets/imperator.jpg';
+import victoriaBg from './assets/victoria.jpg';
+
 import FolderSelector from './components/FolderSelector';
 import Select from './components/Select';
 import SwitchInput from './components/Switch';
@@ -19,6 +26,7 @@ import HowTo from './components/texts/HowTo';
 import Header from './components/texts/Header';
 import OutputType from './components/OutputType';
 import Loader from './components/loader/Loader';
+import Modal from './components/Modal';
 
 const tabs = [
   { name: 'Stellaris', id: 1 },
@@ -51,20 +59,22 @@ function App() {
   });
   // const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  console.log(window.ipcRenderer);
+  const [logs, setLogs] = useState([]);
+  // console.log(window.ipcRenderer);
 
   const toggleLanguage = (language: string) => {
     setOutputLanguages({ ...outputLanguages, [language]: !outputLanguages[language as keyof typeof outputLanguages] });
   };
-  console.log(outputLanguages);
+  // console.log(outputLanguages);
 
   const changeGame = (id: number) => {
-    console.log(id);
+    // console.log(id);
     setGame(id);
   };
   useEffect(() => {
     window.Main.on('translate', (result) => {
-      console.log(result);
+      // console.log(result);
+      setLogs(result.logs);
       setLoading(false);
       toast.success('Sucessfully Translated', {
         position: 'top-right',
@@ -80,47 +90,48 @@ function App() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // if (path === '') {
-    //   // setError('Empty Path');
-    //   toast.error(<div className="text-red-900">Empty path</div>, {
-    //     position: 'top-right',
-    //     autoClose: 5000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined
-    //   });
-    //   return;
-    // }
+    if (path === '') {
+      // setError('Empty Path');
+      toast.error(<div className="text-red-900">Empty path</div>, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
+      return;
+    }
+    // console.log(lang);
     const request = {
       game,
       path,
       output: output.id ?? 1,
-      outputLanguages
+      outputLanguages: Object.keys(outputLanguages).filter((k) => outputLanguages[k as keyof typeof outputLanguages])
     };
     if (window.Main) {
       setLoading(true);
       window.Main.LaunchTranslation(request);
     }
-    console.log(request);
+    // console.log(request);
   };
 
   const currentImg = (id: number): string => {
     if (game)
       switch (id) {
         case 1:
-          return 'url(./assets/stellaris.png)';
+          return `url(${stellarisBg})`;
         case 2:
-          return 'url(./assets/ck3.png)';
+          return `url(${ck3Bg})`;
         case 3:
-          return 'url(./assets/eu4.jpg)';
+          return `url(${eu4Bg})`;
         case 4:
-          return 'url(./assets/hoi4.jpg)';
+          return `url(${hoi4Bg})`;
         case 5:
-          return 'url(./assets/imperator.jpg)';
+          return `url(${imperatorBg})`;
         case 6:
-          return 'url(./assets/victoria.jpg)';
+          return `url(${victoriaBg})`;
         default:
           return '';
       }
@@ -128,89 +139,114 @@ function App() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="">
       <div
-        className="w-full text-gray-300"
+        className="fixed h-screen w-screen"
         style={{ backgroundImage: currentImg(game), backgroundSize: 'cover', backgroundPosition: 'center' }}
-      >
-        <div className="flex h-full flex-col items-center justify-center space-y-4 bg-slate-800/50 px-8 py-4">
-          <Header />
-          <Tabs tabs={tabs} current={game} setGame={changeGame} />
+      />
+      <div className="z-50 space-y-4 overflow-y-scroll bg-slate-800/50 px-8 py-4 text-gray-200">
+        <Header />
+        <Tabs tabs={tabs} current={game} setGame={changeGame} />
+        <div className=" w-full rounded-lg bg-slate-900/75 p-4 text-sm backdrop-blur-sm">
+          <Disclosure>
+            {({ open }: any) => (
+              <>
+                <Disclosure.Button className="flex w-full items-center py-2 text-lg font-semibold">
+                  <ChevronDownIcon className={`mr-2 h-5 w-5 ${open ? 'rotate-180' : ''}`} />
+                  Infos & How to
+                </Disclosure.Button>
+
+                <Disclosure.Panel className="flex gap-4 text-gray-300">
+                  <div className="w-5/12 space-y-4">
+                    <Work />
+                    <Notes />
+                  </div>
+                  <HowTo />
+                </Disclosure.Panel>
+              </>
+            )}
+          </Disclosure>
+        </div>
+        <form id="form" onSubmit={handleSubmit} className="flex w-full flex-col items-center space-y-4">
+          <div className="flex w-full justify-between gap-x-10">
+            <div className="w-7/12 rounded-lg bg-slate-900/75 p-4 backdrop-blur-sm">
+              <FolderSelector path={path} setPath={setPath} />
+              <OutputType mem={output} setMem={setOutput} options={outputOptions} />
+
+              <div className="mt-2 space-y-2">
+                <Disclosure>
+                  {({ open }: any) => (
+                    <>
+                      <Disclosure.Button className="flex items-center py-2 text-lg font-semibold">
+                        <ChevronDownIcon className={`mr-2 h-5 w-5 ${open ? 'rotate-180' : ''}`} />
+                        Options
+                      </Disclosure.Button>
+
+                      <Disclosure.Panel className="text-gray-500">
+                        <div>Soon</div>
+                      </Disclosure.Panel>
+                    </>
+                  )}
+                </Disclosure>
+              </div>
+            </div>
+
+            <div className="space-y-2 rounded-lg bg-slate-900/75 p-4 backdrop-blur-sm">
+              <div>
+                <p className="text-lg font-semibold">Source Language</p>
+                <Select
+                  options={['English', 'French', 'German', 'Spanish', 'Russian', 'Chinese', 'Portugese', 'Polish']}
+                />
+              </div>
+              <div>
+                <p className="text-lg font-semibold">Output language</p>
+                <div className="win-w-max mt-2 grid grid-cols-4 items-center gap-x-3 gap-y-2">
+                  <SwitchInput label="English" disabled />
+                  <SwitchInput label="French" onClick={() => toggleLanguage('french')} />
+                  <SwitchInput label="German" onClick={() => toggleLanguage('german')} />
+                  <SwitchInput label="Spanish" onClick={() => toggleLanguage('spanish')} />
+                  <SwitchInput label="Russian" onClick={() => toggleLanguage('russian')} />
+                  <SwitchInput label="Chinese" onClick={() => toggleLanguage('chinese')} />
+                  <SwitchInput label="Portugese" onClick={() => toggleLanguage('portugese')} />
+                  <SwitchInput label="Polish" onClick={() => toggleLanguage('polish')} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="z-50 inline-flex w-full items-center justify-center rounded-lg border border-transparent bg-amber-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+          >
+            {loading ? <Loader /> : 'Translate '}
+          </button>
+        </form>
+        {logs.length > 0 && (
           <div className=" w-full rounded-lg bg-slate-900/75 p-4 text-sm backdrop-blur-sm">
             <Disclosure>
               {({ open }: any) => (
                 <>
                   <Disclosure.Button className="flex w-full items-center py-2 text-lg font-semibold">
                     <ChevronDownIcon className={`mr-2 h-5 w-5 ${open ? 'rotate-180' : ''}`} />
-                    Infos & How to
+                    Latest Logs
                   </Disclosure.Button>
 
-                  <Disclosure.Panel className="flex gap-4 text-gray-300">
-                    <div className="w-5/12 space-y-4">
-                      <Work />
-                      <Notes />
-                    </div>
-                    <HowTo />
+                  <Disclosure.Panel className="flex h-40 flex-col overflow-auto text-gray-300">
+                    {logs.map((log: string) => (
+                      <code
+                        className={`${log.charAt(0) === 'T' ? 'ml-16' : ''} ${
+                          log.charAt(0) === ' ' ? 'h-5' : ''
+                        } m-0 p-0`}
+                      >
+                        {log}
+                      </code>
+                    ))}
                   </Disclosure.Panel>
                 </>
               )}
             </Disclosure>
           </div>
-          <form id="form" onSubmit={handleSubmit} className="flex w-full flex-col items-center space-y-4">
-            <div className="flex w-full justify-between gap-x-10">
-              <div className="w-7/12 rounded-lg bg-slate-900/75 p-4 backdrop-blur-sm">
-                <FolderSelector path={path} setPath={setPath} />
-                <OutputType mem={output} setMem={setOutput} options={outputOptions} />
-
-                <div className="mt-2 space-y-2">
-                  <Disclosure>
-                    {({ open }: any) => (
-                      <>
-                        <Disclosure.Button className="flex items-center py-2 text-lg font-semibold">
-                          <ChevronDownIcon className={`mr-2 h-5 w-5 ${open ? 'rotate-180' : ''}`} />
-                          Options
-                        </Disclosure.Button>
-
-                        <Disclosure.Panel className="text-gray-500">
-                          <div>Soon</div>
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
-                </div>
-              </div>
-
-              <div className="space-y-2 rounded-lg bg-slate-900/75 p-4 backdrop-blur-sm">
-                <div>
-                  <p className="text-lg font-semibold">Source Language</p>
-                  <Select
-                    options={['English', 'French', 'German', 'Spanish', 'Russian', 'Chinese', 'Portugese', 'Polish']}
-                  />
-                </div>
-                <div>
-                  <p className="text-lg font-semibold">Output language</p>
-                  <div className="win-w-max mt-2 grid grid-cols-4 items-center gap-x-3 gap-y-2">
-                    <SwitchInput label="English" disabled />
-                    <SwitchInput label="French" onClick={() => toggleLanguage('french')} />
-                    <SwitchInput label="German" onClick={() => toggleLanguage('german')} />
-                    <SwitchInput label="Spanish" onClick={() => toggleLanguage('spanish')} />
-                    <SwitchInput label="Russian" onClick={() => toggleLanguage('russian')} />
-                    <SwitchInput label="Chinese" onClick={() => toggleLanguage('chinese')} />
-                    <SwitchInput label="Portugese" onClick={() => toggleLanguage('portugese')} />
-                    <SwitchInput label="Polish" onClick={() => toggleLanguage('polish')} />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="inline-flex w-full items-center justify-center rounded-lg border border-transparent bg-amber-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
-            >
-              {loading ? <Loader /> : 'Translate '}
-            </button>
-          </form>
-        </div>
+        )}
       </div>
       <ToastContainer
         position="top-right"
@@ -224,6 +260,7 @@ function App() {
         draggable
         pauseOnHover
       />
+      <Modal open={loading} />
     </div>
   );
 }
