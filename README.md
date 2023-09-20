@@ -127,7 +127,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Discord : Khoéos#9117
+Discord : khoeos / Khoéos#9117
 
 Project Link: [https://github.com/khoeos/Paradox-mod-language-converter](https://github.com/khoeos/Paradox-mod-language-converter)
 
