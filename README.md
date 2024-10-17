@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/khoeos/Paradox-mod-language-converter">
-    <img src="https://cdn.discordapp.com/attachments/461604877072728074/973244558005645322/unknown.png" alt="Logo">
+    <img src="https://github.com/khoeos/Paradox-mod-language-converter/blob/main/Screenshot.png?raw=true" alt="Logo">
   </a>
 
   <p align="center">
