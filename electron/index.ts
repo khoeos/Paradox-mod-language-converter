@@ -1,11 +1,11 @@
 // Native
-import { join } from 'path';
+import path from 'path';
 
 // Packages
 import { BrowserWindow, app, ipcMain, IpcMainEvent, dialog } from 'electron';
 import isDev from 'electron-is-dev';
 
-import { translate } from './scripts/translate';
+const { Worker } = require('worker_threads');
 
 const height = 800;
 const width = 1280;
@@ -20,12 +20,13 @@ function createWindow() {
     resizable: true,
     fullscreenable: true,
     webPreferences: {
-      preload: join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegrationInWorker: true
     }
   });
 
   const port = process.env.PORT || 3000;
-  const url = isDev ? `http://localhost:${port}` : join(__dirname, '../src/out/index.html');
+  const url = isDev ? `http://localhost:${port}` : path.join(__dirname, '../src/out/index.html');
 
   // and load the index.html of the app.
   if (isDev) {
@@ -34,7 +35,7 @@ function createWindow() {
     window?.loadFile(url);
   }
   // Open the DevTools.
-  // window.webContents.openDevTools({ mode: 'detach' });
+  window.webContents.openDevTools({ mode: 'detach' });
 
   ipcMain.on('openDialog', () => {
     dialog
@@ -47,7 +48,29 @@ function createWindow() {
       .catch((err) => console.log(err));
   });
   ipcMain.on('translate', (event: IpcMainEvent, request: any) => {
-    translate(request).then((result) => event.sender.send('translate', result));
+    const workerPath = path.resolve(__dirname, 'worker.js');
+    const worker = new Worker(workerPath);
+
+    // Envoie la requête de traduction au worker
+    worker.postMessage(request);
+
+    // Récupère les logs une fois la traduction terminée
+    worker.on('message', (result: any) => {
+      event.sender.send('translate', result);
+    });
+
+    // Gestion des erreurs
+    worker.on('error', (error: any) => {
+      console.error('Worker error:', error);
+      event.sender.send('translate', { success: false, error });
+    });
+
+    // Gestion de la fin du worker
+    worker.on('exit', (code: any) => {
+      if (code !== 0) {
+        console.error(`Worker stopped with exit code ${code}`);
+      }
+    });
   });
 }
 

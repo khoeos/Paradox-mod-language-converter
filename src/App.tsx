@@ -141,17 +141,17 @@ function App() {
   return (
     <div className="">
       <div
-        className="fixed h-screen w-screen"
+        className="fixed w-screen h-screen"
         style={{ backgroundImage: currentImg(game), backgroundSize: 'cover', backgroundPosition: 'center' }}
       />
-      <div className="z-50 space-y-4 overflow-y-scroll bg-slate-800/50 px-8 py-4 text-gray-200">
+      <div className="z-50 px-8 py-4 space-y-4 overflow-y-scroll text-gray-200 bg-slate-800/50">
         <Header />
         <Tabs tabs={tabs} current={game} setGame={changeGame} />
-        <div className=" w-full rounded-lg bg-slate-900/75 p-4 text-sm backdrop-blur-sm">
+        <div className="w-full p-4 text-sm rounded-lg bg-slate-900/75 backdrop-blur-sm">
           <Disclosure>
             {({ open }: any) => (
               <>
-                <Disclosure.Button className="flex w-full items-center py-2 text-lg font-semibold">
+                <Disclosure.Button className="flex items-center w-full py-2 text-lg font-semibold">
                   <ChevronDownIcon className={`mr-2 h-5 w-5 ${open ? 'rotate-180' : ''}`} />
                   Infos & How to
                 </Disclosure.Button>
@@ -167,9 +167,9 @@ function App() {
             )}
           </Disclosure>
         </div>
-        <form id="form" onSubmit={handleSubmit} className="flex w-full flex-col items-center space-y-4">
-          <div className="flex w-full justify-between gap-x-10">
-            <div className="w-7/12 rounded-lg bg-slate-900/75 p-4 backdrop-blur-sm">
+        <form id="form" onSubmit={handleSubmit} className="flex flex-col items-center w-full space-y-4">
+          <div className="flex justify-between w-full gap-x-10">
+            <div className="w-7/12 p-4 rounded-lg bg-slate-900/75 backdrop-blur-sm">
               <FolderSelector path={path} setPath={setPath} />
               <OutputType mem={output} setMem={setOutput} options={outputOptions} />
 
@@ -191,7 +191,7 @@ function App() {
               </div>
             </div>
 
-            <div className="space-y-2 rounded-lg bg-slate-900/75 p-4 backdrop-blur-sm">
+            <div className="p-4 space-y-2 rounded-lg bg-slate-900/75 backdrop-blur-sm">
               <div>
                 <p className="text-lg font-semibold">Source Language</p>
                 <Select
@@ -200,7 +200,7 @@ function App() {
               </div>
               <div>
                 <p className="text-lg font-semibold">Output language</p>
-                <div className="win-w-max mt-2 grid grid-cols-4 items-center gap-x-3 gap-y-2">
+                <div className="grid items-center grid-cols-4 mt-2 win-w-max gap-x-3 gap-y-2">
                   <SwitchInput label="English" disabled />
                   <SwitchInput label="French" onClick={() => toggleLanguage('french')} />
                   <SwitchInput label="German" onClick={() => toggleLanguage('german')} />
@@ -216,22 +216,22 @@ function App() {
 
           <button
             type="submit"
-            className="z-50 inline-flex w-full items-center justify-center rounded-lg border border-transparent bg-amber-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+            className="z-50 inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium text-white border border-transparent rounded-lg shadow-sm bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
           >
             {loading ? <Loader /> : 'Translate '}
           </button>
         </form>
         {logs.length > 0 && (
-          <div className=" w-full rounded-lg bg-slate-900/75 p-4 text-sm backdrop-blur-sm">
+          <div className="w-full p-4 text-sm rounded-lg bg-slate-900/75 backdrop-blur-sm">
             <Disclosure>
               {({ open }: any) => (
                 <>
-                  <Disclosure.Button className="flex w-full items-center py-2 text-lg font-semibold">
+                  <Disclosure.Button className="flex items-center w-full py-2 text-lg font-semibold">
                     <ChevronDownIcon className={`mr-2 h-5 w-5 ${open ? 'rotate-180' : ''}`} />
                     Latest Logs
                   </Disclosure.Button>
 
-                  <Disclosure.Panel className="flex h-40 flex-col overflow-auto text-gray-300">
+                  <Disclosure.Panel className="flex flex-col h-40 overflow-auto text-gray-300">
                     {logs.map((log: string) => (
                       <code
                         className={`${log.charAt(0) === 'T' ? 'ml-16' : ''} ${

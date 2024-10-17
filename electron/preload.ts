@@ -25,9 +25,6 @@ const api = {
   LaunchTranslation: (request: typeof requestInterface) => {
     ipcRenderer.send('translate', request);
   },
-  /**
-   * Provide an easier way to listen to events
-   */
   on: (channel: string, callback: (data: any) => void) => {
     ipcRenderer.on(channel, (_, data) => callback(data));
   }
