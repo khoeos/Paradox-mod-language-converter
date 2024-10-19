@@ -1,12 +1,16 @@
-<!-- PROJECT LOGO -->
-<br />
-<p align="center">
-  <a href="https://github.com/khoeos/Paradox-mod-language-converter">
-    <img src="https://github.com/khoeos/Paradox-mod-language-converter/blob/main/Screenshot.png?raw=true" alt="Logo">
+[![stars-shield](https://img.shields.io/github/stars/Khoeos/Paradox-mod-language-converter.svg?style=for-the-badge)](https://github.com/Khoeos/Paradox-mod-language-converter/stargazers)
+[![contributors-shield](https://img.shields.io/github/contributors/Khoeos/Paradox-mod-language-converter.svg?style=for-the-badge)](https://github.com/Khoeos/Paradox-mod-language-converter/graphs/contributors)
+[![issues-shield](https://img.shields.io/github/issues/Khoeos/Paradox-mod-language-converter.svg?style=for-the-badge)](https://github.com/Khoeos/Paradox-mod-language-converter/issues)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg?style=for-the-badge)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+<h1 align="center">Paradox Translation Toolkit</h1>
+
+<a href="https://github.com/khoeos/Paradox-mod-language-converter">
+    <img src="https://github.com/khoeos/Paradox-mod-language-converter/blob/main/screenshots/1.png?raw=true" alt="Logo">
   </a>
 
   <p align="center">
-    A simple app to generate localisation for your language, based on english version for Paradox's Games
+    The easiest way to manage your missing translation files for Paradox games (and more).
     <br />
     <a href="https://github.com/khoeos/Paradox-mod-language-converter/releases"><strong>Download App »</strong></a>
     <br/>
@@ -25,85 +29,81 @@
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#how-to-use">How to use</a>
     </li>
     <li>
-      <a href="#how-it-work">How It Work</a>
+      <a href="#about-the-project">About the project</a>
     </li>
-    <li><a href="#todo">Todo</a></li>
-    <li><a href="#other-paradox-games">Other Paradox Games</a></li>
-    <li><a href="#stacks">Stacks</a></li>
     <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#todo">Todo</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#project-setup">Project Setup</a></li>
+
   </ol>
 </details>
 
-<!-- ABOUT THE PROJECT -->
+## Main functionnalities
 
-## About The Project
+- Generate missing localisation files for any language
+- Generate files directly in the mod folder or in a custom folder
+- View all the missing files, and acess it directly
+- Working with multiple paradox games
 
-As non english player, one thing that annoys me in paradox game, it's the management of translations inside mods. If a modder take the choice to create localisation files to have translation in multiple languages, if there is no files for your language, inside the game you'll only see translation tag, not even the english (ore any languages) texts.
+⚠️ **The tool is in active development, the new version is quite recent and based on the first one but without an extensive testing in every games and every cases, you may encounter some errors, [you can check the V1 for a more stable version](https://github.com/khoeos/Paradox-mod-language-converter/releases/tag/1.0.0) but there is also some known error that are fixed in the last vesion (you have to make a choice 🤡)**
 
-Even if you're good at english, it's a comfort to play with our native language for most of the content with only some untranslated mods in english.
+### Coming soon
 
-So to help all the players like me, and the modders who want to be more inclusive easily, i made this app which do the job of generate localisation files for any selected language from english files (from other languages later).
+- Opt-in each file to generate
+- Deep check in the files for missing keys
+- Extract automatically the missing files into a new custom mod
+- Manage translation files (missing keys, side by side view, etc)
 
-The first version was a simple script not user friendly at all, the second with an interface, but vanilla js and lot of bugs, and not developped for other paradox games, so i decided to upgrade it for the second time.
+## How to use
 
-Only build and tested for windows, due to on the directory system being different from linux and macOs. I'll try to fix that later.
+### 1. **Download and install the app from the** [release page](https://github.com/khoeos/Paradox-mod-language-converter/releases)
 
-**At this time, the app is mainly tested with stellaris, i've use it in eu4 and ck3, but it theorically work with all registered paradox game, see more lower**
+You can use the standalone version, or the installer version. The installer version will create a shortcut on your desktop and in your start menu.
 
-<!-- HOW IT WORK -->
+### 2. **Select the game you want to manage on the top**
 
-## How it Work
+### 3. **Select your mod folder from the path or using the button**
 
-_If you know french, everything is commented, the translation will come later. Every variables and functions are in english though_
+### 4. **Select the language(s) you want to generate**
 
-More details soon
+### 5. **Select the mode**
 
-<!-- OTHER PARADOX GAMES -->
+### 6. **Change the options if you need**
 
-## Other paradox games
+### 7. **Enjoy**
 
-Paradox's game mods use same type of files and folders for the localisation files, the difference is mainly around the name of theses files/folders (localization or localisation). So like I said, this app is mainly tested with stellaris and i've use it in ck3 and eu4, but as the same logic applies, i've done the specificities of the other games. But in some specific cases it may not work.
+The tool will check all the mods in the selected folder, and generate the missing localisation files for the selected languages, based on the source language (english by default).
 
-As the majority of paradox game manage the translation in the same way (CK3, EU4, Hoi4...) it'll normally work with them (hence the choice of the name), simply enter the mod folder path.
-As the script came with multiple filter to select the good file, and never overwrite existing files(exept with specific options), it'll normally not make problems, and even if it's the case, as everything is locally, you'll juste have to re-install the game.
+With the default options, no files will be overwritten, and the tool will only generate missing files.
 
-<!-- Stacks -->
+The tool is mainly tested with Stellaris, but it should work with all Paradox games. But some parameters may be different from one game to another. If you have any issue, please report it.
 
-## Stacks
+Only tested on windows. It may work on other plaforms you can build it yourself, but i can't guarantee it will work.
 
-This app was made from the [Vite electron starter by Maxstue](https://github.com/maxstue/vite-reactts-electron-starter)
-Using [Electron](https://www.electronjs.org/), [React](https://fr.reactjs.org/) and [tailwind](https://tailwindcss.com/)
-The script was first pure javascript, and then converted to [Typescript](), as i'm a beginner with it i may be some bad code currently (we don't talk about :any)
-The script use [Directory-tree](https://www.npmjs.com/package/directory-tree).
+<details>
+  <summary><h2 style="display: inline-block">How it work</h2></summary>
+  <p>I've tried to comment every function I've used and/or use explicit naming so you can easily check the code.</p>
+<p>In brief, using the default functions and options, I have a script that parses all the files in all folders within a directory and filters out only the translation files: specifically, the .yml files located in the localization directory of the selected game.</p>
+<p>For each file, it extracts the file paths from the source language and compares them to the file paths of the output language.</p>
+<p>If the file doesn't exist, the script will copy the source file, replace the language keys in both the file content and the filename with the targeted language, and create the new file in the corresponding location.</p>
+<p>For the "deep check" option I have planned: if the file exists in the targeted language, the script will read it and check for any missing keys that are present in the source file but not in the target file. However, this will require more parsing, so it's not for today.</p>
 
-### Installation
+</details>
 
-Verify you have [node and npm](https://nodejs.org/en/download/) installed with the actual LTS release
+## About the project
 
-1. Clone the repository
-2. Make `npm install`
-3. Launch with `npm start`
+As a non-English player, one thing that frustrates me in Paradox games is the way translations are handled in mods. When a modder chooses to create localization files for multiple languages, if there isn't a file for your language, the game only displays the translation tags, not even the English (or any other language) text.
 
-You need to have yarn installed
+Even if you're proficient in English, it's more comfortable to play in your native language, especially when most of the content is translated, with only a few mods remaining in English.
 
-### How to Build
+To help players like me, and modders who want to be more inclusive with minimal effort, I created this app. It generates localization files for any selected language using English files (and eventually other languages in future versions).
 
-Soon
-
-<!-- TODO -->
-
-## TODO
-
-- Manage incomplete files (missing translation tag for example)
-
-See the [open issues](https://github.com/Khoeos/Paradox-mod-localisation-converter/issues) for a list of proposed features (and known issues).
-
-<!-- CONTRIBUTING -->
+There have been several versions leading up to the current one, and I expect to keep improving it (I’ll try not to let another two years pass before the next update!).
 
 ## Contributing
 
@@ -117,32 +117,57 @@ Contributions are what make the open source community. Any contributions you mak
 
 Don't hesitate to pm me on discord to talk about the app. You can find my tag lower.
 
-<!-- LICENSE -->
+As a translation tool, it need to be translated ! you can find the translation files in `src/i18n` folder. Feel free to add your own language !
+
+## Todo
+
+- Manage incomplete files (missing translation tag for example)
+- Manage files with replace (don't remember why i've excluded these files)
+
+See the [open issues](https://github.com/Khoeos/Paradox-mod-localisation-converter/issues) for a list of proposed features (and known issues).
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
-
-<!-- CONTACT -->
+This project is licensed under the [Creative Commons Attribution - NonCommercial - ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/) license. You are free to share and adapt the content as long as proper attribution is given, it is not used for commercial purposes, and any derivative works are shared under the same license.
 
 ## Contact
 
-Discord : khoeos / Khoéos#9117
+[![logo-discord](https://img.shields.io/badge/khoeos-grey?style=for-the-badge&logo=discord)](https://discordapp.com/users/170144954964770816)
+[![logo-reddit](https://img.shields.io/badge/khoeos-grey?style=for-the-badge&logo=reddit)](https://www.reddit.com/user/khoeos/)
 
 Project Link: [https://github.com/khoeos/Paradox-mod-language-converter](https://github.com/khoeos/Paradox-mod-language-converter)
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+## Project Setup
 
-[contributors-shield]: https://img.shields.io/github/contributors/Khoeos/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/Khoeos/Paradox-mod-language-converter/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Khoeos/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/Khoeos/Paradox-mod-language-converter/network/members
-[stars-shield]: https://img.shields.io/github/stars/Khoeos/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/Khoeos/Paradox-mod-language-converter/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Khoeos/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/Khoeos/Paradox-mod-language-converter/issues
-[license-shield]: https://img.shields.io/github/license/Khoeos/repo.svg?style=for-the-badge
-[license-url]: https://github.com/Khoeos/Paradox-mod-language-converter/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/Khoeos
+### Recommended IDE Setup
+
+- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
+### Install
+
+```bash
+$ npm run install
+```
+
+### Development
+
+```bash
+$ npm run dev
+```
+
+### Build
+
+```bash
+# For windows
+$ npm run build:win
+
+# For macOS
+$ npm run build:mac
+
+# For Linux
+$ npm run build:linux
+```
+## Disclaimer
+
+This project, Paradox Translation Toolkit, is an open-source tool developed by the community and is not affiliated with, endorsed by, or associated with Paradox Interactive in any way. All trademarks and copyrights related to Paradox Interactive and their games are the property of their respective owners. This tool is provided as-is for the purpose of modding and translation, with no guarantees or warranties.
+
